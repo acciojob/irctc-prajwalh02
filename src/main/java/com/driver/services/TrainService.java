@@ -100,12 +100,12 @@ public class TrainService {
         //throw new Exception("Train is not passing from this station");
         //  in a happy case we need to find out the number of such people.
 
-        Train train = trainRepository.findById(trainId).get();
+        Train train=trainRepository.findById(trainId).get();
         String reqStation = station.toString();
         String arr[] = train.getRoute().split(",");
         boolean found = false;
 
-        for(String s : arr){
+        for(String s:arr){
             if(s.equals(reqStation)){
                 found = true;
                 break;
@@ -113,21 +113,20 @@ public class TrainService {
         }
         //if the trainId is not passing through that station
 
-        if(found == false){
+        if(found==false){
             throw new Exception("Train is not passing from this station");
         }
 
-        int noOfPassengers = 0;
+        int noOfPassengers=0;
         //throw new Exception("Train is not passing from this station");
-        List<Ticket>ticketList = train.getBookedTickets();
-        for(Ticket ticket : ticketList){
+        List<Ticket>ticketList= train.getBookedTickets();
+        for(Ticket ticket:ticketList){
             if(ticket.getFromStation().toString().equals(reqStation)){
-                noOfPassengers += ticket.getPassengersList().size();
+                noOfPassengers+=ticket.getPassengersList().size();
             }
         }
 
         //  in a happy case we need to find out the number of such people.
-
         return noOfPassengers;
 
     }
@@ -138,16 +137,14 @@ public class TrainService {
         //We need to find out the age of the oldest person that is travelling the train
         //If there are no people travelling in that train you can return 0
 
-        Train train = trainRepository.findById(trainId).get();
+        Train train=trainRepository.findById(trainId).get();
         //We need to find out the age of the oldest person that is travelling the train
-        int age = Integer.MIN_VALUE;
+        int age= Integer.MIN_VALUE;
         //If there are no people travelling in that train you can return 0
-        if(train.getBookedTickets().size() == 0){
-            return 0;
-        }
+        if(train.getBookedTickets().size() == 0)return 0;
 
         List<Ticket>ticketList = train.getBookedTickets();
-        for(Ticket ticket : ticketList){
+        for(Ticket ticket:ticketList){
             List<Passenger>passengers = ticket.getPassengersList();
             for(Passenger passenger:passengers){
                 age = Math.max(age,passenger.getAge());
@@ -166,17 +163,17 @@ public class TrainService {
 
         List<Integer> TrainList = new ArrayList<>();
         List<Train> trains = trainRepository.findAll();
-        for(Train t : trains){
+        for(Train t:trains){
             String s = t.getRoute();
             String[] ans = s.split(",");
-            for(int i = 0; i < ans.length; i++){
+            for(int i = 0; i < ans.length;i++){
                 if(Objects.equals(ans[i], String.valueOf(station))){
                     int startTimeInMin = (startTime.getHour() * 60) + startTime.getMinute();
                     int lastTimeInMin = (endTime.getHour() * 60) + endTime.getMinute();
 
                     int departureTimeInMin = (t.getDepartureTime().getHour() * 60) + t.getDepartureTime().getMinute();
                     int reachingTimeInMin  = departureTimeInMin + (i * 60);
-                    if(reachingTimeInMin >= startTimeInMin && reachingTimeInMin <= lastTimeInMin)
+                    if(reachingTimeInMin>=startTimeInMin && reachingTimeInMin<=lastTimeInMin)
                         TrainList.add(t.getTrainId());
                 }
             }
